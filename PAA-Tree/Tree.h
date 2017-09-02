@@ -1,4 +1,5 @@
 #pragma once
+#include<string>
 
 class node
 {
@@ -15,20 +16,13 @@ public:
 	node*& left() { return left_; }
 	node*& right() { return right_; }
 	int& value() { return value_; }
-	virtual void add(int value);
+	virtual std::string to_string();
 };
 
-class avl_node : protected node
+class avl_node : public node
 {
 	int balance_;
 	avl_node* father_;
-
-	static void simple_left_rotation(avl_node* node1);
-	static void simple_right_rotation(avl_node* node1);
-	static void left_right_rotation(avl_node* node1);
-	static void right_left_rotation(avl_node* node1);
-
-	void change_child(avl_node* old_, avl_node* new_);
 
 public:
 	avl_node() : node(), balance_(0), father_(nullptr) {}
@@ -38,14 +32,32 @@ public:
 	avl_node(int value, node* left, node* right, int balance) : node(value, left, right), balance_(balance), father_(nullptr) {}
 
 	int& balance() { return balance_; }
+	std::string to_string() override;
+
+	void change_child(node* new_child);
+
+	static node* simple_left_rotation(avl_node* node1);
+	static node* simple_right_rotation(avl_node* node1);
+	static node* left_right_rotation(avl_node* node1);
+	static node* right_left_rotation(avl_node* node1);
 };
 
-class arvore_binaria
+class binary_tree
 {
+protected:
 	node* root_;
+	virtual node* add(int value, node* father);
 
 public:
-	virtual ~arvore_binaria() = default;
-	arvore_binaria() : root_(nullptr) {}
+	virtual ~binary_tree() = default;
+	binary_tree() : root_(nullptr) {}
 	virtual void add(int value);
+	virtual void print();
+};
+
+class avl_tree : public binary_tree
+{
+	node* add(int value, node* node) override;
+public:
+	void add(int value) override;
 };
