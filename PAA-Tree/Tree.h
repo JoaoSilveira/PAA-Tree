@@ -22,14 +22,12 @@ public:
 class avl_node : public node
 {
 	int balance_;
-	avl_node* father_;
 
 public:
-	avl_node() : node(), balance_(0), father_(nullptr) {}
-	explicit avl_node(int value) : node(value), balance_(0), father_(nullptr) {}
-	avl_node(int value, avl_node* father) : node(value), balance_(0), father_(father) {}
-	avl_node(int value, node* left, node* right) : node(value, left, right), balance_(0), father_(nullptr) {}
-	avl_node(int value, node* left, node* right, int balance) : node(value, left, right), balance_(balance), father_(nullptr) {}
+	avl_node() : node(), balance_(0) {}
+	explicit avl_node(int value) : node(value), balance_(0) {}
+	avl_node(int value, node* left, node* right) : node(value, left, right), balance_(0) {}
+	avl_node(int value, node* left, node* right, int balance) : node(value, left, right), balance_(balance) {}
 
 	int& balance() { return balance_; }
 	std::string to_string() override;
@@ -58,6 +56,8 @@ public:
 class avl_tree : public binary_tree
 {
 	node* add(int value, node* node) override;
+	void print_balance(avl_node* node) const;
 public:
 	void add(int value) override;
+	void print_balance() const { print_balance(static_cast<avl_node*>(root_)); }
 };

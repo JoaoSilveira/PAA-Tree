@@ -78,7 +78,7 @@ node* avl_tree::add(int value, node* node)
 		}
 		else
 		{
-			father->left() = new avl_node(value, father);
+			father->left() = new avl_node(value);
 
 			father->balance() -= 1;
 			balancing = father->balance();
@@ -94,7 +94,7 @@ node* avl_tree::add(int value, node* node)
 		}
 		else
 		{
-			father->right() = new avl_node(value, father);
+			father->right() = new avl_node(value);
 
 			father->balance() += 1;
 			balancing = father->balance();
@@ -141,6 +141,17 @@ node* avl_tree::add(int value, node* node)
 	throw std::exception("Something went wrong");
 }
 
+void avl_tree::print_balance(avl_node* node) const
+{
+	if (node == nullptr)
+		return;
+
+	print_balance(static_cast<avl_node*>(node->left()));
+	std::cout << node->balance() << " ";
+	print_balance(static_cast<avl_node*>(node->right()));
+}
+
+
 std::string node::to_string()
 {
 	std::stringstream stream;
@@ -168,7 +179,7 @@ node* avl_node::simple_right_rotation(avl_node* node1)
 
 	node1->balance_ = 0;
 	node2->balance_ = 0;
-	//node1->father_->change_child(node1, node2);
+
 	return node2;
 }
 
@@ -181,7 +192,7 @@ node* avl_node::simple_left_rotation(avl_node* node1)
 
 	node1->balance_ = 0;
 	node2->balance_ = 0;
-	//node1->father_->change_child(node1, node2);
+
 	return node2;
 }
 
@@ -199,8 +210,6 @@ node* avl_node::left_right_rotation(avl_node* node1)
 	node2->balance_ = node3->balance_ == 1 ? -1 : 0;
 	node3->balance_ = 0;
 
-
-	//node1->father_->change_child(node1, node3);
 	return node3;
 }
 
@@ -218,7 +227,6 @@ node* avl_node::right_left_rotation(avl_node* node1)
 	node2->balance_ = node3->balance_ == -1 ? 1 : 0;
 	node3->balance_ = 0;
 
-	//node1->father_->change_child(node1, node3);
 	return node3;
 }
 
