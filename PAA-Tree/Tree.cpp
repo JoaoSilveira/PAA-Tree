@@ -50,6 +50,22 @@ void binary_tree::print()
 	func(root_, "");
 }
 
+bool binary_tree::search(int value)
+{
+	auto node = root_;
+
+	while (node->value() != value && node != nullptr)
+	{
+		if (value < node->value())
+			node = node->left();
+		else
+			node = node->right();
+	}
+
+	return node != nullptr;
+}
+
+
 void avl_tree::add(int value)
 {
 	if (root_ == nullptr)

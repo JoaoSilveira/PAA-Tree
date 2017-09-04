@@ -51,6 +51,7 @@ public:
 	binary_tree() : root_(nullptr) {}
 	virtual void add(int value);
 	virtual void print();
+	virtual bool search(int value);
 };
 
 class avl_tree : public binary_tree
