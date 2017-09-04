@@ -43,15 +43,17 @@ public:
 class binary_tree
 {
 protected:
+	unsigned int comparisons_;
 	node* root_;
 	virtual node* add(int value, node* father);
 
 public:
 	virtual ~binary_tree() = default;
-	binary_tree() : root_(nullptr) {}
+	binary_tree() : comparisons_(0), root_(nullptr) {}
 	virtual void add(int value);
 	virtual void print();
 	virtual bool search(int value);
+	unsigned int& comparisons() { return comparisons_; }
 };
 
 class avl_tree : public binary_tree
@@ -59,6 +61,7 @@ class avl_tree : public binary_tree
 	node* add(int value, node* node) override;
 	void print_balance(avl_node* node) const;
 public:
+	avl_tree() : binary_tree() {}
 	void add(int value) override;
 	void print_balance() const { print_balance(static_cast<avl_node*>(root_)); }
 };
