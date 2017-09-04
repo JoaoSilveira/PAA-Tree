@@ -43,7 +43,7 @@ public:
 class binary_tree
 {
 protected:
-	unsigned int comparisons_;
+	unsigned long long comparisons_;
 	node* root_;
 	virtual node* add(int value, node* father);
 
@@ -53,7 +53,7 @@ public:
 	virtual void add(int value);
 	virtual void print();
 	virtual bool search(int value);
-	unsigned int& comparisons() { return comparisons_; }
+	unsigned long long& comparisons() { return comparisons_; }
 };
 
 class avl_tree : public binary_tree

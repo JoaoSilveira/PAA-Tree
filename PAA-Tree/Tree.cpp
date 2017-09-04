@@ -20,14 +20,20 @@ node* binary_tree::add(int value, node* father)
 	if (value < father->value())
 	{
 		if (father->left() != nullptr)
+		{
 			add(value, father->left());
+			++comparisons_;
+		}
 		else
 			father->left() = new node(value);
 	}
 	else
 	{
 		if (father->right() != nullptr)
+		{
 			add(value, father->right());
+			++comparisons_;
+		}
 		else
 			father->right() = new node(value);
 	}
@@ -60,7 +66,10 @@ bool binary_tree::search(int value)
 			node = node->left();
 		else
 			node = node->right();
+
+		++comparisons_;
 	}
+	++comparisons_;
 
 	return node != nullptr;
 }
@@ -91,6 +100,7 @@ node* avl_tree::add(int value, node* node)
 		if (father->left() != nullptr)
 		{
 			new_child = static_cast<avl_node*>(add(value, father->left()));
+			++comparisons_;
 		}
 		else
 		{
@@ -107,6 +117,7 @@ node* avl_tree::add(int value, node* node)
 		if (father->right() != nullptr)
 		{
 			new_child = static_cast<avl_node*>(add(value, father->right()));
+			++comparisons_;
 		}
 		else
 		{
