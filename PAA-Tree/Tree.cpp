@@ -3,6 +3,39 @@
 #include <sstream>
 #include <iostream>
 #include <functional>
+#include <stack>
+
+binary_tree::~binary_tree()
+{
+	if (root_ == nullptr)
+		return;
+
+	std::stack<node*> nodes;
+
+	nodes.push(root_);
+
+	while (!nodes.empty())
+	{
+		auto top = nodes.top();
+
+		if (top->left() != nullptr)
+		{
+			nodes.push(top->left());
+			top->left() = nullptr;
+			continue;
+		}
+
+		if (top->right() != nullptr)
+		{
+			nodes.push(top->right());
+			top->right() = nullptr;
+			continue;
+		}
+
+		delete top;
+		nodes.pop();
+	}
+}
 
 void binary_tree::add(int value)
 {

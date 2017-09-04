@@ -39,7 +39,9 @@ const int* read_file(const string& order, const int& size)
 binary_tree* build_tree(binary_tree* tree, const int* arr, const string& prefix, const string& order, const int& size)
 {
 	auto time = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	cout << "Started at " << put_time(localtime(&time), "%F %T") << endl;
+	tm aux;
+	localtime_s(&aux, &time);
+	cout << "Started at " << put_time(&aux, "%F %T") << endl;
 
 	const auto start = chrono::system_clock::now();
 
@@ -62,6 +64,8 @@ binary_tree* build_tree(binary_tree* tree, const int* arr, const string& prefix,
 	tree->comparisons() = 0;
 
 	file.close();
+
+	return tree;
 }
 
 binary_tree* build_binary_tree(const int* arr, const string& order, const int& size)
@@ -70,7 +74,7 @@ binary_tree* build_binary_tree(const int* arr, const string& order, const int& s
 
 	cout << order << " Binary Tree (" << size << ") Construction ";
 
-	build_tree(tree, arr, "bb", order, size);
+	return build_tree(tree, arr, "bb", order, size);
 }
 
 binary_tree* build_avl_tree(const int* arr, const string& order, const int size)
@@ -79,13 +83,15 @@ binary_tree* build_avl_tree(const int* arr, const string& order, const int size)
 
 	cout << order << " AVL Tree (" << size << ") Construction ";
 
-	build_tree(tree, arr, "ab", order, size);
+	return build_tree(tree, arr, "ab", order, size);
 }
 
 void search_tree(binary_tree* tree, const int* arr, const string& prefix, const string& order, const int size)
 {
 	auto time = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	cout << "Search Started at " << put_time(localtime(&time), "%F %T") << endl;
+	tm aux;
+	localtime_s(&aux, &time);
+	cout << "Search Started at " << put_time(&aux, "%F %T") << endl;
 
 	const auto start = chrono::system_clock::now();
 
@@ -110,31 +116,49 @@ void search_tree(binary_tree* tree, const int* arr, const string& prefix, const 
 	file.close();
 }
 
-int main()
+int main(int argc, char** argv)
 {
+	auto i = 0;
+	auto j = 0;
+
+	if (argc == 3)
+	{
+		while (strcmp(argv[1], ordenations[i].c_str()) != 0 && i < 3)
+			i++;
+
+		const auto value = atoi(argv[2]);
+
+		while (value != sizes[j] && j < 24)
+			j++;
+
+		if (i == 3 || j == 24)
+			return 0;
+	}
+
 	if(!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
 	{
 		cout << "Failed to enter High Priority" << endl;
 	}
 
-	for (const auto order : ordenations)
+	for (; i < 3; i++)
 	{
-		for (const auto size : sizes)
+		for (; j < 24; j++)
 		{
-			const auto search_array = read_file("b", size);
-			const auto tree_array = read_file(order, size);
-			auto tree = build_binary_tree(tree_array, order, size);
+			const auto search_array = read_file("b", sizes[j]);
+			const auto tree_array = read_file(ordenations[i], sizes[j]);
+			auto tree = build_binary_tree(tree_array, ordenations[i], sizes[j]);
 
-			search_tree(tree, search_array, "bs", order, size);
+			search_tree(tree, search_array, "bs", ordenations[i], sizes[j]);
 			delete tree;
 
-			tree = build_avl_tree(tree_array, order, size);
-			search_tree(tree, search_array, "as", order, size);
+			tree = build_avl_tree(tree_array, ordenations[i], sizes[j]);
+			search_tree(tree, search_array, "as", ordenations[i], sizes[j]);
 
 			delete tree;
 			delete[] search_array;
 			delete[] tree_array;
 		}
 	}
+
 	return 0;
 }

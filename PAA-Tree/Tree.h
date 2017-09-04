@@ -48,7 +48,7 @@ protected:
 	virtual node* add(int value, node* father);
 
 public:
-	virtual ~binary_tree() = default;
+	virtual ~binary_tree();
 	binary_tree() : comparisons_(0), root_(nullptr) {}
 	virtual void add(int value);
 	virtual void print();
