@@ -37,41 +37,49 @@ binary_tree::~binary_tree()
 	}
 }
 
+node* binary_tree::add(int value, node* father)
+{
+	return nullptr;
+}
+
+
 void binary_tree::add(int value)
 {
-	if  (root_ == nullptr)
+	if (root_ == nullptr)
 	{
 		root_ = new node(value);
 		return;
 	}
 
-	add(value, root_);
-}
+	auto node = root_;
 
-node* binary_tree::add(int value, node* father)
-{
-	if (value < father->value())
+	while (true)
 	{
-		if (father->left() != nullptr)
+		if (value < node->value())
 		{
-			add(value, father->left());
-			++comparisons_;
-		}
-		else
-			father->left() = new node(value);
-	}
-	else
-	{
-		if (father->right() != nullptr)
-		{
-			add(value, father->right());
-			++comparisons_;
-		}
-		else
-			father->right() = new node(value);
-	}
+			if (node->left() != nullptr)
+			{
+				node = node->left();
+				++comparisons_;
 
-	return nullptr;
+				continue;
+			}
+
+			node->left() = new ::node(value);
+			break;
+		}
+
+		if (node->right() != nullptr)
+		{
+			node = node->right();
+			++comparisons_;
+
+			continue;
+		}
+
+		node->right() = new ::node(value);
+		break;
+	}
 }
 
 void binary_tree::print()
@@ -93,7 +101,7 @@ bool binary_tree::search(int value)
 {
 	auto node = root_;
 
-	while (node->value() != value && node != nullptr)
+	while (node != nullptr && node->value() != value)
 	{
 		if (value < node->value())
 			node = node->left();

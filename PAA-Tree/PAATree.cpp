@@ -13,7 +13,7 @@
 using namespace std;
 
 const string ordenations[] = { "a", "o", "p" };
-const int sizes[] = { 100, 200, 500, 1000, 2000, 5000, 7500, 10000, 15000, 20000, 30000, 50000, 70000, 75000, 100000, 500000, 750000, 1000000, 1250000, 1500000, 2000000, 5000000, 7500000, 10000000 };
+const int sizes[] = { 100, 200, 500, 1000, 2000, 5000, 7500, 10000, 15000, 30000, 50000, 70000, 75000, 100000, 200000, 500000, 750000, 1000000, 1250000, 1500000, 2000000, 5000000, 7500000, 10000000 };
 
 const int* read_file(const string& order, const int& size)
 {
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 			return 0;
 	}
 
-	if(!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
+	if (!SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS))
 	{
 		cout << "Failed to enter High Priority" << endl;
 	}
@@ -159,6 +159,8 @@ int main(int argc, char** argv)
 			delete[] tree_array;
 		}
 	}
+
+	ExitWindowsEx(EWX_SHUTDOWN | EWX_FORCE, SHTDN_REASON_FLAG_PLANNED);
 
 	return 0;
 }
